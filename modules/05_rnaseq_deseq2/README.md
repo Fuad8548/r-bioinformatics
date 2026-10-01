@@ -224,7 +224,7 @@ print(head(de_results_df, 5))
 
 ### Output
 ```bash
-gene_id baseMean log2FoldChange     lfcSE     stat       pvalue
+gene_id     baseMean log2FoldChange     lfcSE     stat       pvalue
 1 GENE_0004 316.7264       2.542961 0.1415551 17.93193 6.642728e-72
 2 GENE_0031 304.1964       2.373154 0.1400972 16.91322 3.595022e-64
 3 GENE_0067 289.5774       2.294850 0.1400201 16.36512 3.393426e-60
@@ -266,11 +266,62 @@ We convert the specialized S4 object into a standard tidyverse `data.frame`, str
 Looking at the `gene_id` names in our output table: `GENE_0004`, `GENE_0031`, `GENE_0067`, `GENE_0024`, `GENE_0003`. Our simulation successfully worked! All five of these top-ranked genes fall cleanly between 1 and 100—the exact window where we manually injected artificial differential expression in Section 1.
 Let's break down the metrics for our top row (`GENE_0004`):
 
-   - `baseMean (316.72)`: The average normalized read count for this gene across all 6 samples combined. It is a high number, which gives the statistical test high confidence. 
-   - `log2FoldChange (2.54)`: A value of `2.54` translates to a real-world expression multiplier of $\(2^{2.54} \approx 5.8\)$. This tells us that `GENE_0004` is heavily up-regulated in your Treated group compared to your Control group. 
+   - `baseMean (316.72)`(**The Baseline Filter**): The average normalized read count for this gene across all 6 samples combined. It is a high number, which gives the statistical test high confidence.
+	It acts as a safety filter. If a gene has a huge fold change but a baseMean near 0, it means it was just random noise in a single sample. DESeq2 uses baseMean to weed out low-expression junk genes before computing statistics.
+
+   - `log2FoldChange (2.54)`: A value of `2.54` translates to a real-world expression multiplier of $\(2^{2.54} \approx 5.8\)$. This tells us that `GENE_0004` is heavily up-regulated in our Treated group compared to our Control group. 
+   - 
    - `lfcSE (0.14)`: The standard error of the log2 fold change. At `0.14`, it is tiny, indicating that the expression change was highly consistent across our replicates.
-   - `pvalue (6.64e-72)`: The raw probability that this dramatic expression difference occurred purely by random chance (virtually zero).
-   - `padj (6.64e-69)`: The adjusted p-value (using the Benjamini-Hochberg correction). Because we are testing 1,000 genes at once, we run into the multiple testing problem. The `padj` controls our false discovery rate. A value this low (6.64 × 10⁻⁶⁹) means this gene is a highly dependable, true biological discovery.
+     - Why it's necessary: It acts as the penalty metric. If your 3 Treated samples have wildly different numbers, the lfcSE will be high. This is the exact number used during LFC Shrinkage (lfcShrink) to push shaky, unpredictable fold changes back toward zero so they don't corrupt your plot.
+   - `stat` (**The Wald Statistic**): This is our raw mathematical score. It is calculated simply as: $\(\text{stat} = \frac{\text{log2FoldChange}}{\text{lfcSE}}\)$.
+     - Why it's necessary: It scales the fold change against its uncertainty. A high `stat` score means the gene's change is huge and remarkably consistent across all samples. This score is the raw mathematical input used to compute the next step: the p-value.
+
+   - `pvalue (6.64e-72)`: The raw probability that is the direct result of the Wald statistic. It tells you how likely it is to see this change completely by random chance.
+
+   - `padj (6.64e-69)`: The adjusted p-value (using the **Benjamini-Hochberg** correction). Because we are testing 1,000 genes at once, we run into the multiple testing problem. The `padj` controls our false discovery rate. A value this low (6.64 × 10⁻⁶⁹) means this gene is a highly dependable, true biological discovery.
+
+
+# Explanation for the volcano plot
+1. **The Threshold Cutoff Lines**
+   - The Horizontal Line (`-log10(0.05`): This line rests low on our Y-axis at the value `1.30`. Any gene point floating above this horizontal boundary is statistically significant (`padj < 0.05`).
+   - **The Vertical Lines** (`-1` and `1`): These segment our chart into 3 vertical zones. Genes must cross outside these lines to hit a biological fold-change threshold of doubling or halving expression levels.
+   - **Interpretation**: Our top 5 genes (`GENE_0004`, `GENE_0031`, etc.) will sit high above the horizontal line and far to the right of the `1` vertical line, landing deeply in the upper-right "Up-regulated" quadrant.
+
+**Why we used `padj` instead of `pvalue`**?
+
+- `pvalue` (Raw P-value): This evaluates one single gene in isolation. A p-value of 0.05 means there is a 5% chance that this gene's difference is a random fluke.
+- `padj` (Adjusted P-value / FDR): This corrects for the False Discovery Rate when testing thousands of genes at the exact same time.
+
+Imagine we put 20,000 people in a room and ask them all to flip a coin 10 times. By pure random chance, a handful of those 20,000 people will flip 10 heads in a row. In isolation, their raw pvalue looks amazing. But in reality, it was just a statistical certainty because we ran the test so many times.
+
+When analyzing RNA-Seq, we are testing roughly 20,000 genes simultaneously. If we use a raw `pvalue < 0.05`, about **1,000 genes will look significant purely by random chance (false positives)**.
+The `padj` column applies a mathematical correction (like the Benjamini-Hochberg method) to penalize the raw p-values based on how many tests we ran. It guarantees that if we select genes where `padj < 0.05`, only 5% of our entire final list will be false positives.
+Summary: We always use `padj` for our Y-axis and our filtering. Using raw `pvalue` will fill our results with **false-positive noise**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
