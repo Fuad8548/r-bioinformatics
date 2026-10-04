@@ -92,8 +92,13 @@ REACTOME_HIGH_LAMINAR_FLOW_SHEAR_STRESS_ACTIVATES_SIGNALING_BY_PIEZENDOTHELIAL_C
 - `pvalue` and `p.adjust`: The exact numbers inside the inset table of the plot (pvalue 1.159e-05 and p.adjust 0.006372) match the floating-point values saved in the corresponding rows of your CSV file.
 - `core_enrichment`: This is a critical column in your CSV containing a list of gene symbols separated by slashes (e.g., `GNAZ/GNAI1/...`). Visually, these genes are represented by the **dense cluster of vertical black barcode** ticks bunched up on the far-left side of the chart. They are the specific genes that successfully pushed the green enrichment line up to its maximum peak.
 
+## Why GO and KEGG Are Not Enough
+1. **The KEGG Open-Source Data Gap**
+KEGG is a commercial database. Years ago, they restricted public access to their full, updated database files. R packages that pull KEGG data for free often rely on older, frozen versions of the database. If your RNA-seq data uncovers newly discovered gene interactions or novel drug targets, older KEGG structures will miss them entirely. Reactome and MSigDB remain fully open-source and update regularly.
+2. **The Gene Ontology Redundancy Trap**
+GO is structured as a hierarchical tree. If a specific gene set is enriched, GO will often output dozens of parent and child terms that mean almost the same thing (e.g., regulation of cell growth, positive regulation of cell growth, and cellular developmental process). This clutters your dotplots with redundant text, making it difficult to extract the exact biological driver.
 
-
+- Reactome views biology as an exact chemical equation. It tells you if your genes physically form a specific protein complex, bind to a precise receptor, or undergo a distinct phosphorylation event (like the *G Alpha Z Signalling Events* seen in our data).
 
 
 
