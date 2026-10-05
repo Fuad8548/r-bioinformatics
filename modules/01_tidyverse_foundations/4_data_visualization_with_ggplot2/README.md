@@ -6,7 +6,7 @@
 ```r
 library(ggplot2)
 
-# Make sure you use 'tidy_genomics_df' for plotting individual points
+# Make sure we use 'tidy_genomics_df' for plotting individual points
 ggplot(tidy_genomics_df, aes(x = condition, y = log2_tpm, fill = condition)) +
   # 1. Add cleaner boxplots with transparency
   geom_boxplot(alpha = 0.7, outlier.shape = NA, width = 0.5) +
@@ -48,7 +48,7 @@ ggsave(
 2. **Control Genes (Experimental Benchmarks)**
    - `GAPDH` **(Housekeeping Control)**:
      - Notice the y-axis scale for this panel: it spans an incredibly narrow range (from 12.75 to 13.25).
-     - Both the Control and Treated boxplots sit at almost identical heights (~13.0). This confirms your lab processing worked perfectly: `GAPDH` expression remains stable and is unaffected by the drug treatment.
+     - Both the Control and Treated boxplots sit at almost identical heights (~13.0). This confirms our lab processing worked perfectly: `GAPDH` expression remains stable and is unaffected by the drug treatment.
    - `TP53` **(Unchanged Dynamic Baseline)**:
      - Unlike `GAPDH`, the data points for TP53 are much more vertically spread out (ranging from 7.5 to 9.5), meaning this gene naturally has higher sample-to-sample biological variance.
      - However, because the median lines (the dark horizontal bars inside the boxes) sit at roughly the same level (~8.2) for both groups, we can conclude that the treatment had no actual effect on `TP53`.

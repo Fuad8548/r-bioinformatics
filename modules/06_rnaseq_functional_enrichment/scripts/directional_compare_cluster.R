@@ -92,7 +92,7 @@ cat("Saved enrichment table to 'directional_GO_comparative_results.csv'\n")
 
 
 # Save the customized dotplot using ggplot2's ggsave
-# Adjust width/height as needed depending on the length of your GO terms
+# Adjust width/height as needed depending on the length of our GO terms
 ggsave(
     filename = "directional_comparative_dotplot.pdf",
     plot     = p_dot,

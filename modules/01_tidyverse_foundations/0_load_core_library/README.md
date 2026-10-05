@@ -4,7 +4,7 @@ library(tidyverse)
 ```
 **Explanation**:
 **Key Packages in the Tidyverse**
-When you load `library(tidyverse)`, it automatically loads several core packages:
+When we load `library(tidyverse)`, it automatically loads several core packages:
 - `tidyr`: For cleaning and reshaping messy data.
 - `dplyr`: For data manipulation (filtering, mutating, summarizing).
 - `readr` & `tibble`: For importing flat files and managing modern data frames.
@@ -31,7 +31,7 @@ In bioinformatics, high-throughput data comes in many shapes (e.g., wide count m
 Modern bioinformatics packages bridge the gap between heavy genomic objects (like `SummarizedExperiment` or `SingleCellExperiment`) and the tidyverse. Packages like tidybulk and tidySingleCellExperiment allow bioinformaticians to use dplyr verbs and ggplot2 directly on complex sequencing objects without breaking their internal structures.
 
 4. **Simplified Metadata and Batch Management**
-As seen in your code script, dealing with multi-factorial clinical or experimental metadata (such as tracking `batch`, `cell_line`, and `rin_score`) is seamless. Tidyverse makes it easy to spot batch effects, group samples by treatment conditions, and summarize QC metrics before feeding them into differential expression tools like `DESeq2` or `EdgeR`.
+As seen in our code script, dealing with multi-factorial clinical or experimental metadata (such as tracking `batch`, `cell_line`, and `rin_score`) is seamless. Tidyverse makes it easy to spot batch effects, group samples by treatment conditions, and summarize QC metrics before feeding them into differential expression tools like `DESeq2` or `EdgeR`.
 
 
 ## Set reproducible seed for synthetic dataset generation

@@ -29,7 +29,7 @@ Gene Dispersion ──► Shrink toward Global Trend Line ──► Stable Varia
 
 4. **Differential Expression & Multiple Testing (padj)**
 DESeq2 fits a Generalized Linear Model (GLM) for each gene and performs a Wald Test to see if $\text{Log}_2(\text{Fold Change}) \neq 0$.
-   - **The False Discovery Rate (FDR)**: Testing 20,000 genes at a standard $p < 0.05$ significance level means you'll get 1,000 false positives by pure chance.
+   - **The False Discovery Rate (FDR)**: Testing 20,000 genes at a standard $p < 0.05$ significance level means we'll get 1,000 false positives by pure chance.
    - **Adjusted $p$-value (`padj`)**: DESeq2 applies the Benjamini-Hochberg correction to control the False Discovery Rate. A `padj < 0.05` means that no more than 5% of the genes called "significant" are expected to be false positives.
 
 5. **Log2 Fold Change (LFC) Shrinkage**
@@ -87,7 +87,7 @@ col_data <- DataFrame(
 ```
 
 ### Explanations
-In this step, we are creating a mock RNA-Seq experiment from scratch. Generating synthetic data is a standard way to test differential expression workflows because we know exactly which genes are altered. This lets you confirm if `DESeq2` can accurately find them later.
+In this step, we are creating a mock RNA-Seq experiment from scratch. Generating synthetic data is a standard way to test differential expression workflows because we know exactly which genes are altered. This lets we confirm if `DESeq2` can accurately find them later.
 
 1. **Setting Up the Matrix Dimensions**
 ```r
@@ -177,7 +177,7 @@ SAMPLE_1  SAMPLE_2  SAMPLE_3  SAMPLE_4  SAMPLE_5  SAMPLE_6
 ```
 
 ## Explanation
-In this step, you execute `DESeq(dds)`, which is the core processing engine of the entire workflow. Instead of making you run multiple individual math equations, this master function wraps three major statistical steps into a single command to find true differential expression.
+In this step, we execute `DESeq(dds)`, which is the core processing engine of the entire workflow. Instead of making we run multiple individual math equations, this master function wraps three major statistical steps into a single command to find true differential expression.
 
 1. **Estimating Size Factors**
    - The Problem: Samples never have the exact same number of total sequencing reads because of random differences during library preparation. If Sample 4 has twice as many total reads as Sample 1 simply because it sat in the sequencer longer, its raw numbers will look inflated.
@@ -272,11 +272,11 @@ Let's break down the metrics for our top row (`GENE_0004`):
    - `log2FoldChange (2.54)`: A value of `2.54` translates to a real-world expression multiplier of $\(2^{2.54} \approx 5.8\)$. This tells us that `GENE_0004` is heavily up-regulated in our Treated group compared to our Control group. 
    - 
    - `lfcSE (0.14)`: The standard error of the log2 fold change. At `0.14`, it is tiny, indicating that the expression change was highly consistent across our replicates.
-     - Why it's necessary: It acts as the penalty metric. If your 3 Treated samples have wildly different numbers, the lfcSE will be high. This is the exact number used during LFC Shrinkage (lfcShrink) to push shaky, unpredictable fold changes back toward zero so they don't corrupt your plot.
+     - Why it's necessary: It acts as the penalty metric. If our 3 Treated samples have wildly different numbers, the lfcSE will be high. This is the exact number used during LFC Shrinkage (lfcShrink) to push shaky, unpredictable fold changes back toward zero so they don't corrupt our plot.
    - `stat` (**The Wald Statistic**): This is our raw mathematical score. It is calculated simply as: $\(\text{stat} = \frac{\text{log2FoldChange}}{\text{lfcSE}}\)$.
      - Why it's necessary: It scales the fold change against its uncertainty. A high `stat` score means the gene's change is huge and remarkably consistent across all samples. This score is the raw mathematical input used to compute the next step: the p-value.
 
-   - `pvalue (6.64e-72)`: The raw probability that is the direct result of the Wald statistic. It tells you how likely it is to see this change completely by random chance.
+   - `pvalue (6.64e-72)`: The raw probability that is the direct result of the Wald statistic. It tells we how likely it is to see this change completely by random chance.
 
    - `padj (6.64e-69)`: The adjusted p-value (using the **Benjamini-Hochberg** correction). Because we are testing 1,000 genes at once, we run into the multiple testing problem. The `padj` controls our false discovery rate. A value this low (6.64 × 10⁻⁶⁹) means this gene is a highly dependable, true biological discovery.
 

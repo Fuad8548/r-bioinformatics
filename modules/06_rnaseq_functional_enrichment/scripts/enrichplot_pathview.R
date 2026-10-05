@@ -49,13 +49,13 @@ kegg_res <- setReadable(kegg_res, OrgDb = org.Hs.eg.db, keyType = "ENTREZID")
 # Gene-Concept Network Plot (cnetplot)
 p_cnet <- cnetplot(
     kegg_res,
-    showCategory   = 5,
-    foldChange     = log2fc_vector,
-    layout         = igraph::layout_in_circle,
-    color_edge     = "category",
-    node_label     = "all",
-    size_category  = 1.2,
-    size_item      = 0.8
+    showCategory = 5,
+    foldChange = log2fc_vector,
+    lawet = igraph::lawet_in_circle,
+    color_edge = "category",
+    node_label = "all",
+    size_category = 1.2,
+    size_item = 0.8
 ) +
     scale_color_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
     labs(title = "Gene-Concept Network (cnetplot) with Fold Change")
@@ -63,7 +63,7 @@ p_cnet <- cnetplot(
 print(p_cnet)
 
 
-# Save the plot with specified dimensions (adjust width/height if your labels get cut off)
+# Save the plot with specified dimensions (adjust width/height if our labels get cut off)
 ggsave(
     filename = "kegg_cnetplot.pdf",
     plot     = p_cnet,
@@ -72,6 +72,29 @@ ggsave(
     height   = 10, # Height in inches
     units    = "in",
     dpi      = 300 # High resolution production quality
+)
+
+
+# Heatmap-like Plot (heatplot)
+# Displays gene-pathway relationships in a compact grid matrix
+p_heat <- heatplot(
+    kegg_res,
+    showCategory = 10,
+    foldChange   = log2fc_vector
+) +
+    scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7))
+
+print(p_heat)
+
+ggsave(
+    filename = "kegg_heatplot.pdf",
+    plot     = p_heat,
+    device   = "pdf",
+    width    = 16,
+    height   = 8,
+    units    = "in",
+    dpi      = 300
 )
 
 
@@ -123,28 +146,6 @@ p_tree <- treeplot(
 print(p_tree)
 
 ggsave("go_treeplot.pdf", plot = p_tree, width = 12, height = 10, units = "in")
-
-# Heatmap-like Plot (heatplot)
-# Displays gene-pathway relationships in a compact grid matrix
-p_heat <- heatplot(
-    kegg_res,
-    showCategory = 10,
-    foldChange   = log2fc_vector
-) +
-    scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7))
-
-print(p_heat)
-
-ggsave(
-    filename = "kegg_heatplot.pdf",
-    plot     = p_heat,
-    device   = "pdf",
-    width    = 16,
-    height   = 8,
-    units    = "in",
-    dpi      = 300
-)
 
 
 # ==============================================================================

@@ -99,7 +99,7 @@ print(mcols(genes_gr))
 
 **Explanations:**
 1. `seqnames(genes_gr)`
-   - **What it does**: Extracts only the chromosome names from your data.
+   - **What it does**: Extracts only the chromosome names from our data.
    - **What the output means**: It ignores the coordinates, strands, and metadata, giving us back just a list of the chromosomes: `chr1`, `chr1`, `chr2`.
 
 Output: 
@@ -111,7 +111,7 @@ Levels(2) :  chr1 chr2
 
 2. `ranges(genes_gr)`
    - **What it does**: Extracts only the start and end positions (the `IRanges` component), along with the width (length) of each region.
-   - What the output means: R automatically calculates the width for you (End - Start + 1). You will see a clean summary of the boundaries:
+   - What the output means: R automatically calculates the width for we (End - Start + 1). we will see a clean summary of the boundaries:
 
 Output:
 ```bash
@@ -124,7 +124,7 @@ Output:
 
 3. `mcols(genes_gr)`
    - **What it does**: Extracts only the custom metadata columns (everything to the right of the `|` vertical bar). `mcols` stands for "metadata columns".
-   - **What the output means**: It strips away the genomic coordinates and leaves you with a standard data table containing just your custom variables: `gene_id` and `score`.
+   - **What the output means**: It strips away the genomic coordinates and leaves we with a standard data table containing just our custom variables: `gene_id` and `score`.
 
 Output:
 ```bash
@@ -137,7 +137,7 @@ Output:
 
 ## 2. Strand-Aware Range Transformations
 
-This section is all about finding the promoters of your genes. In biology, a promoter is a region of DNA located just before the start of a gene where transcription begins (the Transcription Start Site or TSS).
+This section is all about finding the promoters of our genes. In biology, a promoter is a region of DNA located just before the start of a gene where transcription begins (the Transcription Start Site or TSS).
 The term "Strand-Aware" is the most important concept here. Because DNA has two strands running in opposite directions, "before the gene" means different things depending on the strand:
 - On the plus (`+`) strand, the gene goes left-to-right. The promoter sits to the left (lower coordinates).
 - On the minus (`-`) strand, the gene goes right-to-left. The promoter sits to the right (higher coordinates).
@@ -179,7 +179,7 @@ print(promoters_explicit[, "gene_id"])
 
 **Finding Promoters using `promoters()`**
 
-While `flank()` only looks strictly outside the gene boundaries, the built-in `promoters()` function allows you to create a window that captures data **both before and slightly inside the gene**.
+While `flank()` only looks strictly outside the gene boundaries, the built-in `promoters()` function allows we to create a window that captures data **both before and slightly inside the gene**.
 
 ```r
 promoters_explicit <- promoters(genes_gr, upstream = 2000, downstream = 200)
@@ -276,7 +276,7 @@ The `disjoin()` function does the opposite. Instead of combining them, it **chop
   [3]     chr1 2501-3500      *
   [4]     chr1 7000-9000      *
 ```
-**When to use it**: When you need to analyze the exact sections of DNA that are either shared between samples or strictly unique to one sample.
+**When to use it**: When we need to analyze the exact sections of DNA that are either shared between samples or strictly unique to one sample.
 
 
 ## 4. Overlap & Intersection Analysis
@@ -304,7 +304,7 @@ print(peaks_on_genes)
 1. `findOverlaps()` — **The Matchmaker**
 The `findOverlaps()` function looks at every range in the `query` and checks if it physically intersects with any range in the `subject`.
 
-Instead of returning a new set of coordinates, it returns a specialized "Hits" object, which acts like a map of connections. It lists pairs of row numbers matching the query to the subject. If you print `overlaps`, it will show pairs like this:
+Instead of returning a new set of coordinates, it returns a specialized "Hits" object, which acts like a map of connections. It lists pairs of row numbers matching the query to the subject. If we print `overlaps`, it will show pairs like this:
 
 ```bash
 Hits object with 3 hits and 0 metadata columns:
@@ -320,7 +320,7 @@ Hits object with 3 hits and 0 metadata columns:
 - (Peak 3 at `7000-9000` is on chr1, but Gene B is on the minus strand of `chr1`, and Gene C is on `chr2`—depending on settings, it won't match Gene B if strand strictness is turned on).
 
 2. `queryHits()` & `subjectHits()` — **Extracting the Row Numbers**
-These two functions allow you to pull those raw row numbers out of the Hits object so you can use them in standard R programming loop scripts or filters.
+These two functions allow we to pull those raw row numbers out of the Hits object so we can use them in standard R programming loop scripts or filters.
 
 - `queryHits(overlaps)` gives us a simple vector of the row numbers from `peaks_gr` that found a match.
 - `subjectHits(overlaps)` gives us the corresponding row numbers from `genes_gr` that were hit.

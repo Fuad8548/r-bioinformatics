@@ -117,70 +117,53 @@ for (dir in directories) {
     file.create(gitkeep_path)
   }
 }
-
-# 3. Package Manager Verification
-cat("\n--- Checking Package Managers ---\n")
-
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  cat("Installing BiocManager...\n")
-  install.packages("BiocManager", repos = "https://cloud.r-project.org")
-} else {
-  cat("[OK] BiocManager is ready.\n")
-}
-
-if (!requireNamespace("renv", quietly = TRUE)) {
-  cat("Installing renv...\n")
-  install.packages("renv", repos = "https://cloud.r-project.org")
-} else {
-  cat("[OK] renv is ready.\n")
-}
-
-# 4. Helper File Templates
-utils_path <- "R/utils.R"
-if (!file.exists(utils_path)) {
-  writeLines(
-    c(
-      "# R/utils.R - Shared utility functions",
-      "",
-      "load_bio_packages <- function() {",
-      "  suppressPackageStartupMessages({",
-      "    library(tidyverse)",
-      "    library(BiocManager)",
-      "  })",
-      "  message('Core bioinformatics libraries loaded.')",
-      "}"
-    ),
-    con = utils_path
-  )
-  cat("[TEMPLATE] Created R/utils.R\n")
-}
-
-theme_path <- "R/plotting_theme.R"
-if (!file.exists(theme_path)) {
-  writeLines(
-    c(
-      "# R/plotting_theme.R - Custom publication theme for ggplot2",
-      "library(ggplot2)",
-      "",
-      "theme_bio <- function(base_size = 12) {",
-      "  theme_minimal(base_size = base_size) +",
-      "    theme(",
-      "      panel.grid.minor = element_blank(),",
-      "      axis.title = element_text(face = 'bold'),",
-      "      strip.text = element_text(face = 'bold'),",
-      "      legend.position = 'bottom'",
-      "    )",
-      "}"
-    ),
-    con = theme_path
-  )
-  cat("[TEMPLATE] Created R/plotting_theme.R\n")
-}
-
-cat("\n=== Initialization Complete! Run 'renv::init()' in R to start tracking dependencies. ===\n")
 ```
 
+### A concise reference summary of the key concepts learned across Modules 01 through 06
 
+|          Module           |                                Core Mental Model                                 |                                               Key S4 classes & Functions                                                |                                     Practical Output/ Utility                                      |
+| :-----------------------: | :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------: |
+|  01. Tidyverse & Base R   |            Tidy data wrangling and grammar-of-graphics visualization             | dplyr (filter, mutate, group_by, summarize), tidyr (pivot_longer, pivot_wider), ggplot2 (geom_point, geom_boxplot, aes) |           Cleaned expression matrices and metadata data frames; publication-ready plots.           |
+|   02. Bioconductor & S4   | Slot-based object encapsulation separating count assays from row/column metadata | SummarizedExperiment, Biostrings (DNAStringSet), slot access via @ or accessor methods (assay(), colData(), rowData())  |      Standardized omics data containers combining expression values with sample annotations.       |
+|    03. Genomic Ranges     |            1-based genomic interval math and coordinate intersections            |                      GRanges, IRanges, rtracklayer::import(), findOverlaps(), reduce(), nearest()                       |      Annotation parsing (GTF/GFF/BED) and overlap queries between peaks, genes, and variants.      |
+| 04. NGS Data & Alignment  |        Memory-efficient streaming and indexing of aligned sequence reads         |                  Rsamtools (BamFile, ScanBamParam), GenomicAlignments (readGAlignments()), coverage()                   | Efficient extraction of read alignments, mapping quality filtering, and genomic coverage profiles. |
+|    05. Bulk RNA-Seq DE    |      Negative Binomial modeling of raw read counts with variance shrinkage       |                         DESeq2 (DESeqDataSetFromMatrix, DESeq(), results(), lfcShrink()), edgeR                         |  Normalized counts, $log_2\text{FC}$ estimates, adjusted $p$-values (FDR), and volcano/MA plots.   |
+| 06. Functional Enrichment |       Mapping DE genes or ranked metrics to biological pathway ontologies        |                       clusterProfiler (enrichGO, enrichKEGG, GSEA), msigdbr, enrichplot, pathview                       |       ORA $p$-values, GSEA Normalized Enrichment Scores (NES), network plots, and KEGG maps.       |
+
+
+### Core Data Flow Across Modules 01–06
+
+```text
+Raw Reads (.bam) ─────────► Genomic Coordinates (.gtf / GRanges)
+        │                                     │
+   [Module 04]                           [Module 03]
+        │                                     │
+        └──────────────────┬──────────────────┘
+                           ▼
+            SummarizedExperiment Container
+            ├── Assays: Raw Count Matrix
+            └── Metadata: Sample Phenotypes
+                       [Module 02]
+                           │
+                           ▼
+          Differential Expression Analysis
+          ├── Size Factor Normalization
+          └── Negative Binomial Wald Test
+                       [Module 05]
+                           │
+                           ▼
+          Significantly DE Genes & Rank Metric
+                           │
+                           ▼
+            Pathway & Functional Enrichment
+            ├── Over-Representation Analysis (ORA)
+            └── Gene Set Enrichment Analysis (GSEA)
+                       [Module 06]
+                           │
+                           ▼
+       Tidy Data Wrangling & Publication Figures
+                       [Module 01]
+```
 
 
 

@@ -91,7 +91,7 @@ To calculate mathematical differences between groups, it is easier if the Contro
 This table summarizes our RNA-Seq experiment across 12 total samples (6 Control vs. 6 Treated) for four distinct genes. Since the data is in $\[\log _{2}\]$ TPM, a 1-unit difference in `mean_exp` equates to a **2-fold change** in biological expression. 
 1. **BRCA1 (Strong Up-regulation)**:
    - **Control**: 7.70 $\[\rightarrow \]$ **Treated**: 11.23.
-   - **Meaning**: The mean expression increased by roughly 3.5 units. Because $\(2^{3.5} \approx 11.3\)$, `BRCA1` is expressed over **11 times higher** in your treated samples compared to controls.
+   - **Meaning**: The mean expression increased by roughly 3.5 units. Because $\(2^{3.5} \approx 11.3\)$, `BRCA1` is expressed over **11 times higher** in our treated samples compared to controls.
 2. **EGFR (Strong Down-regulation)**: 
    - **Control**: 8.61 $\[\rightarrow \]$ **Treated**: 5.37.
    - Meaning: Expression dropped by more than 3 units. This indicates that treatment significantly **suppresses** `EGFR` expression.

@@ -85,11 +85,11 @@ close(bam_file)
 seq1 seq2 
 1575 1584
 ```
-This tells you that our reference genome for this experiment consists of exactly two reference contigs/chromosomes:
+This tells we that our reference genome for this experiment consists of exactly two reference contigs/chromosomes:
    - `seq1`: has a total length of 1,575 base pairs.
    - `seq2`: has a total length of 1,584 base pairs.
 
-Any alignment position inside this BAM file will fall within these coordinates. Once you have this information, close(bam_file) safely disconnects from the file.
+Any alignment position inside this BAM file will fall within these coordinates. Once we have this information, close(bam_file) safely disconnects from the file.
 
 
 # 2. Targeted Import with `ScanBamParam`
@@ -148,7 +148,7 @@ These are automatically calculated genomic boundaries managed by the `GenomicAli
 - `qwidth` / `width`: `qwidth` is the length of the raw sequence query read itself. `width` is how much physical space it spans along the reference chromosome.
 
 **Right Side (The Metadata Columns)**
-Everything to the right of the `|` represents the raw raw data you specifically requested via the `what` argument.
+Everything to the right of the `|` represents the raw raw data we specifically requested via the `what` argument.
   - `njunc`: Number of junctions (gaps or introns spanned by the read). They are all `0`, indicating continuous, unbroken genomic DNA or fully mapped exonic fragments.
   - `mapq`: The raw MAPQ scores. We can see values like `99` (extremely confident) and `63`, which easily cleared our minimum threshold of `20`.
 
@@ -222,7 +222,7 @@ print(assays(se_counts)$counts)
 ```
 
 ### Explanations
-In this step, you performed **RNA-Seq read quantification**. We took our genomic sequence alignments (the BAM file) and mapped them against an annotation map (the exons) to count how many fragments belong to each gene.
+In this step, we performed **RNA-Seq read quantification**. We took our genomic sequence alignments (the BAM file) and mapped them against an annotation map (the exons) to count how many fragments belong to each gene.
 
 1. **Defining the Genomic Annotation Structure ( `GRangesList`)**
 - **What it is**: In real-world projects, this structure is usually loaded automatically from a **GTF/GFF annotation file** using packages like `GenomicFeatures`.
@@ -230,7 +230,7 @@ In this step, you performed **RNA-Seq read quantification**. We took our genomic
   - `Gene_A` has two separate exons: one from base pair 100 to 500, and a second one from 800 to 1200.
 
 2. **Quantifying Overlaps (`summarizeOverlaps`)**
-This is the machine that matches your reads to your exons.
+This is the machine that matches our reads to our exons.
    - `mode = "Union"`: This defines the logical rule for counting. Under `Union`, if a sequencing read overlaps any part of any exon belonging to `Gene_A`, it scores a point for `Gene_A`. If a read splits across an intron but hits both exons, it still safely counts as exactly 1 hit for that gene.
 
 ### Output 
@@ -255,7 +255,7 @@ Gene_A     825
 Gene_B      82
 ```
 
-This is your final biological data payload:
+This is our final biological data payload:
 - `Gene_A (825)`: Out of the 1,476 total filtered reads on `seq1` (from Part 2), 825 reads physically overlapped the exons of Gene_A. This indicates robust gene expression.
 - `Gene_B (82)`: Even though Gene_B's coordinates (`1500` to `2800`) stretch way past the absolute end of `seq1` (`1575` bp), it managed to catch 82 reads. This means there is a pile of reads mapping right at the trailing tail edge of `seq1` (between 1500 and 1575) before the chromosome ends!
 

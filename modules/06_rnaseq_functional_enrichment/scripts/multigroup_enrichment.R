@@ -214,7 +214,7 @@ if (!is.null(ck_go) && nrow(ck_go_df) > 0) {
     # 1. Recalculate semantic similarity matrix
     ck_go_sim <- pairwise_termsim(ck_go)
 
-    # 2. Build the optimized treeplot layout
+    # 2. Build the optimized treeplot lawet
     p_tree <- treeplot(
         ck_go_sim,
         showCategory     = 3, # Number of top terms to show per cluster
@@ -230,7 +230,7 @@ if (!is.null(ck_go) && nrow(ck_go_df) > 0) {
         ) +
         labs(title = "Clustered Functional Pathway Map Across Timepoints")
 
-    # Display in your active R session window
+    # Display in our active R session window
     print(p_tree)
 
     # 3. Save as a large canvas vector PDF to prevent any overlapping

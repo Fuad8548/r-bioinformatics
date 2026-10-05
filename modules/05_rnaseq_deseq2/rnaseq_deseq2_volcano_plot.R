@@ -45,7 +45,7 @@ p_volcano <- ggplot(plot_data, aes(x = log2FoldChange, y = -log10(padj))) +
         max.overlaps = Inf
     ) +
 
-    # Styling and clean layout
+    # Styling and clean lawet
     theme_classic() +
     labs(
         title = "Volcano Plot: Differential Gene Expression",

@@ -99,7 +99,7 @@ ranked_genes <- ranked_genes[!duplicated(names(ranked_genes))]
 cat("Total ranked genes for GSEA:", length(ranked_genes), "\n")
 print(head(ranked_genes, 3) ... )
 ```
-- What it does: It prints a summary to your screen, showing you the total number of genes (2,500) and a sneak peek at the top 3 highest-scoring genes in a neat little table.
+- What it does: It prints a summary to our screen, showing we the total number of genes (2,500) and a sneak peek at the top 3 highest-scoring genes in a neat little table.
 
 ### Output:
 ```bash
@@ -142,7 +142,7 @@ if (nrow(gse_go_df) > 0) {
 ```
 
 **Explanation:**
-This script takes your sorted list of genes and runs them through the `gseGO()` function (which comes from the `clusterProfiler` package) to find matching biological pathways.
+This script takes our sorted list of genes and runs them through the `gseGO()` function (which comes from the `clusterProfiler` package) to find matching biological pathways.
 1. `gseGO()` arguments:
 - `geneList` = `ranked_genes`: This inputs our sorted, named vector of genes that we created in the first step.
 - `OrgDb = org.Hs.eg.db`: This tells the function to use the Human genome database mapping tool to read our Entrez ID numbers.
@@ -201,19 +201,19 @@ if (nrow(gse_go_df) > 0) {
 This section creates a Dotplot for our Gene Ontology results.
 - `dotplot(gse_go_res, showCategory = 10, split = ".sign")`: This pulls the top 10 pathways and splits them based on their "sign" (whether they are Activated with a positive NES score, or Suppressed with a negative NES score).
 - `facet_grid(. ~ .sign)`: This splits the visual window into two separate side-by-side panels: one panel showing activated pathways, and one showing suppressed pathways.
-• What you will see: A chart with dots. The size of each dot represents how many genes overlap with that pathway, and the color intensity represents the statistical significance (p-value).
+• What we will see: A chart with dots. The size of each dot represents how many genes overlap with that pathway, and the color intensity represents the statistical significance (p-value).
 
 ### What the plot shows:
 1. **The X-Axis: Gene Ratio**
-• What it means: The `GeneRatio` (tracked at the bottom from 0.35 to 0.50) tells us **what percentage of the core genes in that pathway** showed up in your highly ranked "rigged" list.
+• What it means: The `GeneRatio` (tracked at the bottom from 0.35 to 0.50) tells us **what percentage of the core genes in that pathway** showed up in our highly ranked "rigged" list.
 - **According to our output:**
-	- `cyclic nucleotide biosynthetic process` and `reactive oxygen species`... are pulled all the way to the right at `0.50`. This means an impressive 50% of all the genes that control those pathways were sitting at the top of your ranked list.
+	- `cyclic nucleotide biosynthetic process` and `reactive oxygen species`... are pulled all the way to the right at `0.50`. This means an impressive 50% of all the genes that control those pathways were sitting at the top of our ranked list.
 	- lipid oxidation sits at `0.45` (45%).
 	- The two purine pathways sit on the left near `0.31`.
 
 2. **The Dot Color: Adjusted P-Value (`p.adjust`)**
-- What it means: The color gradient measures statistical confidence. According to your legend, red/pink represents highly significant values (closer to `0.029`), while blue represents values approaching `0.038`.
-- According to your output:
+- What it means: The color gradient measures statistical confidence. According to our legend, red/pink represents highly significant values (closer to `0.029`), while blue represents values approaching `0.038`.
+- According to our output:
 	- `lipid oxidation` has the lowest p-value (`0.02906`). On our plot, its dot is the most **vibrant red**, marking it as the most statistically reliable result.
 	- `reactive oxygen species...`. has the highest p-value (`0.03803`). On our plot, it shifts noticeably to a cool **blue dot**.
 
@@ -269,7 +269,7 @@ hsa04213 0.015583606
 ```
 
 **Script Explanations:**
-This code takes your sorted gene list and looks for matching biochemical networks or molecular signaling pathways in the KEGG database.
+This code takes our sorted gene list and looks for matching biochemical networks or molecular signaling pathways in the KEGG database.
 - `gseKEGG(...)`: This function initiates the Gene Set Enrichment Analysis using the KEGG database instead of the GO database.
 - `organism = "hsa"`: This specifies the organism. `hsa` is the official KEGG shortcode for **Homo sapiens** (human).
 - `keyType = "ncbi-geneid"`: This tells the function that our gene list is named using official NCBI/Entrez ID numbers (like 142), which is the native format KEGG expects.
@@ -286,7 +286,7 @@ This code takes your sorted gene list and looks for matching biochemical network
 • `p.adjust`: All of these adjusted p-values are well below 0.05 (e.g., 0.002 is vastly lower than 0.05), proving these results are highly statistically valid.
 
 **Breakdown of Top Pathways Found:**
-1. `hsa04923` (Regulation of lipolysis in adipocytes): This pathway dictates how fat cells break down lipids. It has the highest score (NES = 2.10), meaning your highest-scoring genes heavily overlap with fat metabolism.
+1. `hsa04923` (Regulation of lipolysis in adipocytes): This pathway dictates how fat cells break down lipids. It has the highest score (NES = 2.10), meaning our highest-scoring genes heavily overlap with fat metabolism.
 
 
 # Visualization
@@ -312,9 +312,9 @@ This section creates the iconic "GSEA Plot" for our #1 top KEGG pathway (which w
 - `top_kegg_id <- gse_kegg_df$ID[1]`: This grabs the ID string (`"hsa04923"`) from the first row of our KEGG data frame automatically.
 - `gseaplot2(...)`: This creates a three-tiered classic GSEA visualization:
 	1. Top Panel: A green line showing the "Running Enrichment Score." Because our genes are highly activated, we will see this line spike upward drastically on the left side of the chart and then taper off.
-	2. Middle Panel: A "barcode" plot. Every single vertical black line represents a gene from that specific lipid pathway. You will see a heavy cluster of black bars on the far-left side (the "winners" section).
-	3. Bottom Panel: A ranking metric map showing your Wald statistics/scores plunging from high positive numbers down to negative numbers.
-• ggsave(...): This automatically exports and saves that gorgeous KEGG running score chart as a clean, publication-ready PDF file named gsea_running_score.pdf in your current working folder.
+	2. Middle Panel: A "barcode" plot. Every single vertical black line represents a gene from that specific lipid pathway. we will see a heavy cluster of black bars on the far-left side (the "winners" section).
+	3. Bottom Panel: A ranking metric map showing our Wald statistics/scores plunging from high positive numbers down to negative numbers.
+• ggsave(...): This automatically exports and saves that gorgeous KEGG running score chart as a clean, publication-ready PDF file named gsea_running_score.pdf in our current working folder.
 
 ### Explanation of the KEGG plot:
 1. **Top Panel: The Running Enrichment Score (RES)**
