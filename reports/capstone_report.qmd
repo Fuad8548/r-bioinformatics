@@ -1,0 +1,109 @@
+---
+title: "End-to-End Omics Analysis & Capstone Report"
+author: "Bioinformatics Core"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    theme: flatly
+    code-fold: show
+    code-summary: "Click to toggle code"
+    self-contained: true
+params:
+  project_title: "Bulk RNA-Seq & Functional Enrichment Pipeline"
+  padj_cutoff: 0.05
+  lfc_cutoff: 1.0
+---
+
+```{r setup, include=FALSE}
+# Chunk setup options
+knitr::opts_chunk.param = list(
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 8,
+  fig.height = 5,
+  dpi = 300
+)
+
+library(dplyr)
+library(ggplot2)
+library(DT)
+```
+
+# Executive Summary
+
+This report documents the end-to-end pipeline run for **`r params$project_title`**.
+
+* **FDR Significance Threshold ($p_{adj}$):** `r params$padj_cutoff`
+* **Log2 Fold-Change Threshold:** `r params$lfc_cutoff`
+
+---
+
+# Data Ingestion & Processing
+
+```{r data-simulation}
+set.seed(42)
+
+# Generate synthetic differential expression results table
+results_df <- data.frame(
+  GeneSymbol = paste0("GENE_", 1:1000),
+  baseMean   = runif(1000, 10, 5000),
+  log2FC     = rnorm(1000, mean = 0, sd = 1.5),
+  pvalue     = runif(1000, 0, 0.05)
+) %>%
+  mutate(
+    padj = p.adjust(pvalue, method = "BH"),
+    Significance = case_when(
+      padj < params$padj_cutoff & log2FC > params$lfc_cutoff ~ "Up-regulated",
+      padj < params$padj_cutoff & log2FC < -params$lfc_cutoff ~ "Down-regulated",
+      TRUE ~ "Not Significant"
+    )
+  )
+```
+
+---
+
+# Differential Expression Results
+
+::: {.panel-tabset}
+
+## Volcano Plot
+
+```{r volcano-plot, fig.cap="Volcano plot displaying differential gene expression significance."}
+ggplot(results_df, aes(x = log2FC, y = -log10(padj), color = Significance)) +
+  geom_point(alpha = 0.7, size = 1.8) +
+  scale_color_manual(values = c("Up-regulated" = "#D95F02", 
+                                "Down-regulated" = "#7570B3", 
+                                "Not Significant" = "grey70")) +
+  geom_vline(xintercept = c(-params$lfc_cutoff, params$lfc_cutoff), linetype = "dashed") +
+  geom_hline(yintercept = -log10(params$padj_cutoff), linetype = "dashed") +
+  theme_minimal() +
+  labs(
+    title = "Differential Expression Volcano Plot",
+    x = expression("log"[2]*" Fold Change"),
+    y = expression("-log"[10]*" Adjusted p-value")
+  )
+```
+
+## Significant DEGs Table
+
+```{r deg-table}
+sig_degs <- results_df %>% 
+  filter(Significance != "Not Significant") %>%
+  arrange(padj)
+
+datatable(
+  sig_degs,
+  options = list(pageLength = 5, autoWidth = TRUE),
+  caption = "Table of Significantly Differential Genes"
+)
+```
+
+:::
+
+# Conclusion & Next Steps
+
+Pipeline execution completed successfully with **`r nrow(sig_degs)`** differentially expressed genes identified.
