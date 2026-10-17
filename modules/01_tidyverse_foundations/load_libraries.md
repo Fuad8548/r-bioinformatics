@@ -10,7 +10,7 @@ When we load `library(tidyverse)`, it automatically loads several core packages:
 - `readr` & `tibble`: For importing flat files and managing modern data frames.
 - `ggplot2`: For creating production-ready data visualizations.
 
-**Significance of Tidyverse in Bioinformatics**
+## Significance of Tidyverse in bioinformatics
 Historically, bioinformatics in R relied heavily on "Base R" syntax and specialized data structures from the Bioconductor ecosystem. The adoption of the tidyverse has completely transformed modern computational biology for several reasons:
 1. **Readability and the Pipe Operator (`%>% or |>`)**
 Bioinformatics workflows involve complex multi-step data pipelines (e.g., filtering a gene list $\[\rightarrow \]$ calculating log-fold changes $\[\rightarrow \]$ joining with annotation data $\[\rightarrow \]$ plotting). The tidyverse allows us to chain these operations logically. 

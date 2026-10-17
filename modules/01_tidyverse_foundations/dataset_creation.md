@@ -14,20 +14,20 @@ metadata <- tibble(
 ## Explanation:
 The code uses the `tibble()` function (a modern, user-friendly version of a standard R `data.frame`) to build 5 specific columns for 12 hypothetical samples: 
 - `sample_id = paste0("SMP_", 1:12)`
-  - What it does: Generates 12 unique sample identifiers labeled `SMP_1`, `SMP_2`, ..., up to `SMP_12`
-  - Why it matters: This acts as the "Primary Key" or unique anchor used to link these sample traits directly to their genetic expression data later on.
+  - Generates 12 unique sample identifiers labeled `SMP_1`, `SMP_2`, ..., up to `SMP_12`
+  - This acts as the "Primary Key" or unique anchor used to link these sample traits directly to their genetic expression data later on.
 - `condition = rep(c("Control", "Treated"), each = 6)`
-  - What it does: Creates a vector that repeats "Control" 6 times, followed by "Treated" 6 times.
-  - Why it matters: This establishes our primary biological comparison group (the independent variable).
-- ``cell_line = rep(c("Hela", "HEK293"), times = 6)``
-  - What it does: Alternates between two widely used cell lines (`Hela`, `HEK293`, `Hela`, `HEK293`...) for all 12 rows.
-  - Why it matters: This introduces a biological covariate. Cancers behave differently depending on the cell type background, so tracking this allows us to control for baseline differences between HeLa (cervical cancer origin) and HEK293 (human embryonic kidney origin).
+  - Creates a vector that repeats "Control" 6 times, followed by "Treated" 6 times.
+  - This establishes our primary biological comparison group (the independent variable).
+- `cell_line = rep(c("Hela", "HEK293"), times = 6)`
+  - Alternates between two widely used cell lines (`Hela`, `HEK293`, `Hela`, `HEK293`...) for all 12 rows.
+  - This introduces a biological covariate. Cancers behave differently depending on the cell type background, so tracking this allows us to control for baseline differences between HeLa (cervical cancer origin) and HEK293 (human embryonic kidney origin).
 - `batch = sample(c("Batch_A", "Batch_B"), 12, replace = TRUE)`
-  - What it does: Randomly assigns each sample to either `Batch_A` or `Batch_B`.
-  - Why it matters: It simulates "batch effects"—technical variations that happen when samples are processed on different days, by different lab technicians, or using different reagent kits.
+  - Randomly assigns each sample to either `Batch_A` or `Batch_B`.
+  - It simulates "batch effects"—technical variations that happen when samples are processed on different days, by different lab technicians, or using different reagent kits.
 - `rin_score = round(runif(12, min = 6.8, max = 9.9), 1)`
-  - What it does: Uses `runif()` to generate 12 random numbers between 6.8 and 9.9, rounding them to one decimal place.
-  - Why it matters: RIN stands for RNA Integrity Number. It ranges from 1 (completely degraded RNA) to 10 (perfectly intact RNA). A score above 7.0 is typically required for high-quality sequencing. This column acts as a Quality Control (QC) metric.
+  - Uses `runif()` to generate 12 random numbers between 6.8 and 9.9, rounding them to one decimal place.
+  - RIN stands for RNA Integrity Number. It ranges from 1 (completely degraded RNA) to 10 (perfectly intact RNA). A score above 7.0 is typically required for high-quality sequencing. This column acts as a Quality Control (QC) metric.
 
 
 ```r

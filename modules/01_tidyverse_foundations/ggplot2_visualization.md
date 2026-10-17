@@ -6,7 +6,6 @@
 ```r
 library(ggplot2)
 
-# Make sure we use 'tidy_genomics_df' for plotting individual points
 ggplot(tidy_genomics_df, aes(x = condition, y = log2_tpm, fill = condition)) +
   # 1. Add cleaner boxplots with transparency
   geom_boxplot(alpha = 0.7, outlier.shape = NA, width = 0.5) +
@@ -42,7 +41,7 @@ ggsave(
    - `BRCA1` **(Up-regulated by Treatment)**:
      - There is a major upward shift in expression from the Control group (centering around 7.2–8.0) to the Treated group (centering around 9.5–11.0).
      - The individual sample dots show zero overlap between the two conditions. This indicates a highly consistent, strong induction of `BRCA1` activity under treatment.
-   - `EGFR` **(Down-regulated by Treatment)**:We see the exact opposite trend. Under control conditions, EGFR maintains a high baseline around 9.0–10.0.
+   - `EGFR` **(Down-regulated by Treatment)**: We see the exact opposite trend. Under control conditions, EGFR maintains a high baseline around 9.0–10.0.
    - Following treatment, its expression plummets sharply to a tight cluster around 5.0–6.0. The treatment strongly suppresses or down-regulates this gene.
 
 2. **Control Genes (Experimental Benchmarks)**

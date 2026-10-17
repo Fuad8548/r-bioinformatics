@@ -7,7 +7,7 @@
 
 # 0. Load Core Libraries & Source Project Utilities
 library(tidyverse)
-source("R/plotting_theme.R") # Loads theme_bio()
+library(ggplot2)
 
 # Set reproducible seed for synthetic dataset generation
 set.seed(42)
@@ -93,7 +93,15 @@ p1 <- ggplot(tidy_genomics_df, aes(x = gene, y = log2_tpm, fill = condition)) +
         y        = "Expression (log2 TPM)",
         fill     = "Condition"
     ) +
-    theme_bio()
+    theme_bio <- function(base_size = 12) {
+    theme_minimal(base_size = base_size) +
+        theme(
+            panel.grid.minor = element_blank(),
+            axis.title = element_text(face = "bold"),
+            strip.text = element_text(face = "bold"),
+            legend.position = "bottom"
+        )
+}
 
 # Save output plot
 ggsave("outputs/figures/m01_gene_expression_boxplot.png", plot = p1, width = 8, height = 5, dpi = 300)

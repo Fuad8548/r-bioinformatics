@@ -32,7 +32,7 @@ It performs two distinct tasks:
   - It throws away degraded biological samples and isolates specific genes of interest;
   - It calculates exactly how much gene expression changed between the **Control** and **Treated** groups.
 
-1. **Filtering Quality and Selecting Targets (filtered_df)**
+1. **Filtering Quality and Selecting Targets (`filtered_df`)**
 ```r
 filtered_df <- tidy_genomics_df |>
   filter(rin_score >= 7.5, gene %in% c("BRCA1", "EGFR"))
